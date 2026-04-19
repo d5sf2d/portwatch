@@ -20,3 +20,18 @@ func FilterDiffs(diffs []state.Diff, l *List, t time.Time) []state.Diff {
 	}
 	return out
 }
+
+// CountSuppressed returns the number of diffs that would be suppressed
+// at the given time. This is useful for metrics and logging.
+func CountSuppressed(diffs []state.Diff, l *List, t time.Time) int {
+	if l == nil {
+		return 0
+	}
+	count := 0
+	for _, d := range diffs {
+		if l.IsSuppressed(d.Port, t) {
+			count++
+		}
+	}
+	return count
+}
