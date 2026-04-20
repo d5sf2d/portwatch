@@ -25,3 +25,14 @@ func FromDiffs(diffs []state.Diff, host string, ts time.Time) []Entry {
 	}
 	return entries
 }
+
+// FilterByHost returns only the entries that match the given host string.
+func FilterByHost(entries []Entry, host string) []Entry {
+	result := make([]Entry, 0)
+	for _, e := range entries {
+		if e.Host == host {
+			result = append(result, e)
+		}
+	}
+	return result
+}
