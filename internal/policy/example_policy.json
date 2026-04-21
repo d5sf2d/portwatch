@@ -1,0 +1,22 @@
+{
+  "rules": [
+    {
+      "Name": "no-telnet",
+      "Port": 23,
+      "MustBeClosed": true,
+      "AllowedHosts": []
+    },
+    {
+      "Name": "no-ftp",
+      "Port": 21,
+      "MustBeClosed": true,
+      "AllowedHosts": []
+    },
+    {
+      "Name": "db-not-public",
+      "Port": 5432,
+      "MustBeClosed": true,
+      "AllowedHosts": ["db.internal"]
+    }
+  ]
+}
