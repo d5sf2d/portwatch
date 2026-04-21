@@ -59,6 +59,31 @@ func (r *Reporter) Write(snap state.Snapshot) error {
 	}
 }
 
+// WriteDiff outputs a human-readable summary of port changes between two snapshots.
+func (r *Reporter) WriteDiff(diff state.Diff) error {
+	if len(diff.Opened) == 0 && len(diff.Closed) == 0 {
+		return nil
+	}
+	_, err := fmt.Fprintf(r.out, "[%s] Host: %s — port changes detected\n",
+		time.Now().Format(time.RFC3339), diff.Host)
+	if err != nil {
+		return err
+	}
+	for _, p := range diff.Opened {
+		_, err = fmt.Fprintf(r.out, "  + %-6d %s\n", p.Port, p.Service)
+		if err != nil {
+			return err
+		}
+	}
+	for _, p := range diff.Closed {
+		_, err = fmt.Fprintf(r.out, "  - %-6d %s\n", p.Port, p.Service)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (r *Reporter) writeText(rep Report) error {
 	_, err := fmt.Fprintf(r.out, "[%s] Host: %s — %d open port(s)\n",
 		rep.Timestamp.Format(time.RFC3339), rep.Host, rep.Total)
