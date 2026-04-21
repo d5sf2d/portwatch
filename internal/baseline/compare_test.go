@@ -48,3 +48,11 @@ func TestCompare_EmptyCurrent(t *testing.T) {
 		t.Errorf("expected 2 removed, got %d", len(d.Removed))
 	}
 }
+
+func TestCompare_NoChanges(t *testing.T) {
+	b := baseline.Capture([]int{22, 80, 443})
+	d := baseline.Compare(b, []int{22, 80, 443})
+	if d.HasChanges() {
+		t.Errorf("expected no changes, got added=%v removed=%v", d.Added, d.Removed)
+	}
+}
