@@ -2,5 +2,7 @@
   "ports": [22, 80, 443, 3306, 5432, 8080],
   "interval": "60s",
   "state_dir": "/var/lib/portwatch",
-  "log_file": "/var/log/portwatch.log"
+  "log_file": "/var/log/portwatch.log",
+  "alert_threshold": 3,
+  "notify_email": ""
 }
