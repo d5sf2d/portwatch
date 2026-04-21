@@ -41,3 +41,15 @@ func TestCompare_HashLengthIs64(t *testing.T) {
 		t.Fatalf("expected 64-char hex hash, got %d", len(s.Curr.Hash))
 	}
 }
+
+func TestCompare_PrevAndCurrDifferWhenChanged(t *testing.T) {
+	prev := makeSnap(22, 80)
+	curr := makeSnap(22, 80, 443)
+	s := digest.Compare(prev, curr)
+	if !s.Changed {
+		t.Fatal("expected Changed=true when port set differs")
+	}
+	if s.Prev == s.Curr {
+		t.Fatal("expected Prev and Curr digests to differ when snapshots differ")
+	}
+}
