@@ -91,3 +91,15 @@ func (s *Sampler) RecordStable() {
 
 // Reset restores the interval to the configured maximum.
 func (s *Sampler) Reset() { s.current = s.max }
+
+// Progress returns a value in [0.0, 1.0] representing how far the current
+// interval is between the minimum and maximum. A value of 0.0 means the
+// sampler is at its most aggressive (min interval); 1.0 means it is fully
+// relaxed (max interval).
+func (s *Sampler) Progress() float64 {
+	span := float64(s.max - s.min)
+	if span == 0 {
+		return 1.0
+	}
+	return float64(s.current-s.min) / span
+}
