@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	now   = time.Date(2024, 6, 1, 12, 0, 0, 0, time.UTC)
+	now    = time.Date(2024, 6, 1, 12, 0, 0, 0, time.UTC)
 	before = now.Add(-1 * time.Hour)
 	after  = now.Add(1 * time.Hour)
 )
@@ -36,6 +36,18 @@ func TestIsSuppressed_DifferentPort(t *testing.T) {
 	l := makeList()
 	if l.IsSuppressed(9090, now) {
 		t.Fatal("expected port 9090 not to be suppressed")
+	}
+}
+
+func TestIsSuppressed_AtWindowBoundaries(t *testing.T) {
+	l := makeList()
+	// Exactly at Start should be suppressed
+	if !l.IsSuppressed(8080, before) {
+		t.Fatal("expected port 8080 to be suppressed at window start")
+	}
+	// Exactly at End should be suppressed
+	if !l.IsSuppressed(8080, after) {
+		t.Fatal("expected port 8080 to be suppressed at window end")
 	}
 }
 
